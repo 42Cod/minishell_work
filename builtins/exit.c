@@ -42,7 +42,7 @@ void	ft_exit(t_input *input)
 	{
 		ft_putendl_fd("exit", STDERR);
 		input->ret = ft_atoi(input->cmd[1]);
-		exit(0);
+		exit(ft_atoi(input->cmd[1]));
 	}
 	if (ft_strisnum((input->cmd[1])) && input->cmd[2])
 	{
