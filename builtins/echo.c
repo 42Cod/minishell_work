@@ -40,6 +40,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (new);
 }
 
+static char	*clean_cmd(char *cmd)
+{
+	char	*clean_cmd;
+
+	if (ft_strrchr(cmd, '$') == NULL)
+		return (cmd);
+	if (cmd[0] == '\'' && cmd[ft_strlen(cmd) - 1] == '\'')
+	{
+		clean_cmd = ft_substr(cmd, 1, ft_strlen(cmd) - 2);
+		return (clean_cmd);
+	}
+	return (cmd);
+}
+
 int	ft_echo(t_input **input)
 {
 	int		i;
@@ -56,8 +70,9 @@ int	ft_echo(t_input **input)
 		}
 		while ((*input)->cmd[i])
 		{
-			if (check_nip(input) == 1)
-				break ;
+			(*input)->cmd[i] = clean_cmd((*input)->cmd[i]);
+			// if (check_nip(input) == 1)
+			// 	break ;
 			ft_putstr_fd((*input)->cmd[i], 1);
 			if ((*input)->cmd[i + 1] && (*input)->cmd[i][0] != '\0')
 				write(1, " ", 1);
@@ -71,6 +86,7 @@ int	ft_echo(t_input **input)
 
 int	check_nip(t_input **input)
 {
+	printf("cmd[1]: %s\n", (*input)->cmd[1]);
 	if (ft_strchr((*input)->cmd[1], '\'') == 0)
 		return (0);
 	if (ft_strchr((*input)->cmd[1], '\'') == 1)
