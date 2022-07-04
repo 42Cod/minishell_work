@@ -1,28 +1,8 @@
-unset erste var //norminette
-exit code
 "´´" quotes
 deins in whatsapp 
-unset alleine eingeben //passt
 ""
 makefile path readline
 
-🦦 eho $?
-cmd not found
-🦦 echo $?
-255
-🦦 
 
-echo " exitet direkt auch mit single quote, exit bei nur einer quote // klären ob unsere var fnkt
-
-
-check double env export mit export hey// noch fûr env und name und value sonst eght es
-
-
-relative path
-
-enviroment path
-
-cat Makefile | grep "(" | grep CC // ist stuck fnkt mit nur einem grep
-
-
-!!!!! export name=was export name=wo dann export löscht nur das zweite unset und export
+echo "h'i'k"
+printed only 'i' nicht h'i'k
