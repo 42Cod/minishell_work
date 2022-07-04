@@ -55,6 +55,11 @@ void	create_op_files(t_operator **operator)
 	tmp = (*operator);
 	while (tmp != NULL)
 	{
+		if (tmp->content == NULL)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		trash_fd = open(tmp->content, O_CREAT, 0777);
 		close(trash_fd);
 		tmp = tmp->next;
