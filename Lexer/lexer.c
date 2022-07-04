@@ -12,6 +12,8 @@
 
 #include "../minishell.h"
 
+int	g_state[2];
+
 void	read_heredocs(t_input *input)
 {
 	t_operator	*op;

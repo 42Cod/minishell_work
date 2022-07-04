@@ -116,7 +116,7 @@ enum e_state
 	EXEC
 };
 
-int			g_state[2];
+extern int	g_state[2];
 int			main(int ac, char **argv, char **envp);
 int			save_line(t_env *env, t_env2 *env2);
 void		parser(char *line_comb, t_buffer **buffer,
