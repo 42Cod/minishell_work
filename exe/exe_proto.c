@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_proto.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 15:13:10 by nkolle            #+#    #+#             */
-/*   Updated: 2022/06/03 13:57:53 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/04 18:03:56 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 			}
 			if (locals->pid == 0)
 				exit_status = child_proc(input, locals, env2);
+			else if (locals->pid != 0)
+				locals->pa[locals->i] = locals->pid;
 		}
 	}
 	return (exit_status);
