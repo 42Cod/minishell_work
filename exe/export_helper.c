@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:49:55 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/03 13:39:43 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/04 19:54:42 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	init_locals(t_exe_locals *locals)
 	locals->j = 0;
 	locals->fd_in = STDIN_FILENO;
 	locals->fd_out = STDOUT_FILENO;
-	locals->fd_next = STDIN_FILENO;
+	locals->fd_next = 0;
 	locals->fd_standard_in = dup(STDIN_FILENO);
 	locals->fd_standard_out = dup(STDOUT_FILENO);
 	locals->flag_previous_pipe = 0;

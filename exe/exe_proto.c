@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   exe_proto.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 15:13:10 by nkolle            #+#    #+#             */
-/*   Updated: 2022/06/03 13:57:53 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/04 19:58:45 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	handle_child_fds(t_exe_locals *locals, int fd[2])
+{
+	if (locals->fd_in != STDIN_FILENO)
+	{
+		dup2(locals->fd_in, STDIN_FILENO);
+		close(locals->fd_in);
+	}
+	if (locals->fd_out != STDOUT_FILENO)
+		dup2(locals->fd_out, STDOUT_FILENO);
+	else if (locals->i != locals->j - 1)
+		dup2(fd[1], STDOUT_FILENO);
+	else if (locals->i == locals->j - 1)
+	{
+		close(STDOUT_FILENO);
+		dup2(locals->fd_standard_out, STDOUT_FILENO);
+	}
+	protected_close(locals->fd_out);
+	close(fd[0]);
+	close(fd[1]);
+}
 
 int	*process_count(t_input *input, int *j)
 {
@@ -57,8 +78,10 @@ int	safe_pipe(int *left, int *right)
 int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 {
 	int	exit_status;
+	int	fd[2];
 
 	exit_status = 0;
+	pipe(fd);
 	if (exec_redir(input, locals) == 0)
 	{
 		if (is_builtin((*(*input).cmd)))
@@ -77,7 +100,20 @@ int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 				return (-1);
 			}
 			if (locals->pid == 0)
+			{
+				handle_child_fds(locals, fd);
 				exit_status = child_proc(input, locals, env2);
+			}
+			else if (locals->pid != 0)
+			{
+				locals->pa[locals->i] = locals->pid;
+				close(fd[1]);
+				protected_close(locals->fd_in);
+				protected_close(locals->fd_out);
+				if (locals->i != locals->j - 1 && locals->fd_next == 0)
+					locals->fd_in = dup(fd[0]);
+				close(fd[0]);
+			}
 		}
 	}
 	return (exit_status);
