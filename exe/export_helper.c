@@ -87,7 +87,7 @@ char	**char_converter(t_input **input)
 		j = 0;
 		str = ft_strjoin(env->name, env->value);
 		j = ft_strlen(str);
-		arr[i] = calloc(sizeof(char), j);
+		arr[i] = ft_calloc(sizeof(char), j);
 		arr[i] = ft_strdup(str);
 		env = env->next;
 		i++;
