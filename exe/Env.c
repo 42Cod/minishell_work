@@ -15,11 +15,9 @@
 int	env_create_new(t_env **env_struct, char **env_array)
 {
 	t_env	*new;
-	t_env	*head;
 	int		i;
 
 	i = 0;
-	head = *env_struct;
 	while (env_array && env_array[i])
 	{
 		new = ft_calloc(1, sizeof(t_env));

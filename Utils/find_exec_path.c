@@ -43,11 +43,9 @@ char	*find_exec_path(t_input	**input)
 
 char	*find_path(t_input **input)
 {
-	int		i;
 	t_env	*tmp_head;
 	char	*ret;
 
-	i = 0;
 	tmp_head = (*(*input)->env);
 	while ((*(*input)->env) && (*(*input)->env)->name)
 	{

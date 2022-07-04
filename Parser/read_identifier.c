@@ -16,13 +16,11 @@ char	*read_identifier(char **line_comb)
 {
 	char		*str;
 	t_buffer	*buffer;
-	t_buffer	*new_buffer;
 
 	buffer = NULL;
 	str = NULL;
-	new_buffer = NULL;
 	buffer = ft_calloc(1, sizeof(t_buffer));
-	new_buffer = stringbuffer_create_node(&buffer);
+	stringbuffer_create_node(&buffer);
 	rd_helper(line_comb, &buffer);
 	stringbuffer_get_string(&buffer, &str);
 	stringbuffer_destroy(&buffer);
