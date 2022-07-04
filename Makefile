@@ -1,7 +1,13 @@
 
 	CC = gcc
 
-FLAGS = -g -Wall -Werror -Wextra -L ./libft -lft -lreadline -L /usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+CFLAGS = -Wall -Werror -Wextra
+READLINE_LINK = -L /usr/local/opt/readline/lib
+READLINE_INC = -I/usr/local/opt/readline/include
+LIBFT_LINK = -L ./libft
+L_FLAGS = -lft -lreadline
+
+FLAGS = -L ./libft -lft -lreadline -L /usr/local/opt/readline/lib -I/usr/local/opt/readline/include -g -Wall -Werror -Wextra 
 
 INCLUDES = minishell.h
 
@@ -36,6 +42,7 @@ SRC = Lexer/lexer.c\
 	Utils/find_exec_path.c\
 	Lexer/signal.c\
 	exe/convert_list_array.c
+OBJ = $(patsubst %.c, %.o, $(SRC))
 LIBFT = $(MAKE) -C ./libft
 
 OBJS = $(SRC:.c=.o)
@@ -43,12 +50,15 @@ OBJS = $(SRC:.c=.o)
 NAME = minishell
 
 all: $(NAME)
-$(NAME):
+$(NAME): $(OBJ)
 	$(LIBFT) 
-	$(CC) $(FLAGS) $(DEBUGTHISSHIT) $(SRC) $^ -o $@
+	$(CC) $(OBJ) $(READLINE_LINK) $(READLINE_INC) $(CFLAGS) $(LIBFT_LINK) $(L_FLAGS)  -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(READLINE_INC) -o $@ -c $<
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJ)
 	rm -f *.a
 	make -C ./libft clean
 
