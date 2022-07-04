@@ -17,7 +17,7 @@ int	env_size(char *env)
 	int	i;
 
 	i = 0;
-	while (env[i] && env[i] != '=')
+	while (env && env[i] && env[i] != '=')
 		i++;
 	return (i);
 }
@@ -34,19 +34,19 @@ void	*ft_memdel(void *ptr)
 
 void	free_node(t_env *env)
 {
-	ft_memdel(env->value);
-	ft_memdel(env->name);
-	ft_memdel(env);
+	env->value = ft_memdel(env->value);
+	env->name = ft_memdel(env->name);
+	env = ft_memdel(env);
 }
 
 void	free_node2(t_env2 *env2)
 {
-	ft_memdel(env2->value_hidden);
-	ft_memdel(env2->name_hidden);
-	ft_memdel(env2);
+	env2->value_hidden = ft_memdel(env2->value_hidden);
+	env2->name_hidden = ft_memdel(env2->name_hidden);
+	env2 = ft_memdel(env2);
 }
 
-int	ft_unset(t_env *env, t_env2 *env2, t_input **input)
+int	ft_unset(t_env *env, t_env2 *env2, t_env2 *prev, t_input **input)
 {
 	t_env	*tmp;
 	t_env2	*tmp2;
@@ -71,12 +71,14 @@ int	ft_unset(t_env *env, t_env2 *env2, t_input **input)
 		}
 		env = env->next;
 	}
+	tmp2 = NULL;
 	if (ft_strncmp((*input)->cmd[1], env2->name_hidden,
 				env_size(env2->name_hidden)) == 0)
 	{
 			tmp2 = env2->next;
 			free_node2(env2);
-			env2->next = tmp2;
+			prev->next = tmp2;
+			env2 = prev;
 	}
 	while (env2 && env2->next)
 	{

@@ -67,37 +67,122 @@ int	env_add(t_env **env_struct, char *cmd)
 	return (0);
 }
 
+static char	*get_env_value(char *cmd)
+{
+	char	*env_value;
+	int		env_length;
+	char	*cmd_at_equals;
+	int		i;
+
+	cmd_at_equals = ft_strrchr(cmd, '=') + 1;
+	if (cmd_at_equals == NULL)
+		return (NULL);
+	env_length = ft_strlen(cmd_at_equals);
+	env_value = ft_calloc(env_length, sizeof(*env_value));
+	if (env_value == NULL)
+		return (NULL);
+	i = 0;
+	while (i < env_length)
+	{
+		env_value[i] = cmd_at_equals[i];
+		++i;
+	}
+	return (env_value);
+}
+
+static char	*get_env_name(char *cmd)
+{
+	char	*env_name;
+
+	env_name = ft_substr(cmd, 0, ft_strrchr(cmd, '=') - cmd);
+	if (env_name == NULL)
+		return (NULL);
+	return (env_name);
+}
+
+static bool	is_already_in_env(char *cmd, t_env2 *hidden_env)
+{
+	t_env2	*hidden_env_tmp;
+	char	*env_name;
+	int		length;
+
+	env_name = get_env_name(cmd);
+	hidden_env_tmp = hidden_env;
+	while (hidden_env_tmp)
+	{
+		if (ft_strlen(hidden_env_tmp->name_hidden) > ft_strlen(env_name))
+			length = ft_strlen(hidden_env_tmp->name_hidden);
+		else
+			length = ft_strlen(env_name);
+		if (ft_strncmp(hidden_env_tmp->name_hidden, env_name,
+				length) == 0)
+		{
+			free(env_name);
+			return (true);
+		}
+		hidden_env_tmp = hidden_env_tmp->next;
+	}
+	free(env_name);
+	return (false);
+}
+
+static void	overwrite_value(char *cmd, t_env *env, t_env2 *hidden_env)
+{
+	t_env	*tmp_env;
+	t_env2	*tmp_hidden_env;
+	char	*env_name;
+	char	*env_value;
+
+	env_name = get_env_name(cmd);
+	env_value = get_env_value(cmd);
+	tmp_env = env;
+	while (tmp_env)
+	{
+		if (ft_strncmp(tmp_env->name, env_name, ft_strlen(env_name)) == 0)
+		{
+			free(tmp_env->value);
+			tmp_env->value = ft_strjoin("=", env_value);
+			break ;
+		}
+		tmp_env = tmp_env->next;
+	}
+	tmp_hidden_env = hidden_env;
+	while (tmp_hidden_env)
+	{
+		if (ft_strncmp(tmp_hidden_env->name_hidden, env_name, \
+			ft_strlen(env_name)) == 0)
+		{
+			free(tmp_hidden_env->value_hidden);
+			tmp_hidden_env->value_hidden = ft_strdup(env_value);
+			break ;
+		}
+		tmp_hidden_env = tmp_hidden_env->next;
+	}
+	free(env_name);
+	free(env_value);
+}
+
 int	ft_export(t_env *env, t_env2 *env2, t_input **input)
 {
 	int	error_env;
 	int	i;
 	int	flag;
-	t_env2	*tmp2;
-	t_env	*tmp;
 
 	error_env = 0;
 	flag = 0;
-	tmp = env;
-	tmp2 = env2;
 	if (!(*input)->cmd[1])
 	{
 		print4(env2);
 		return (SUCCESS);
 	}
 	i = 0;
-	while ((*input)->cmd[++i] && tmp2)
+	while ((*input)->cmd[++i])
 	{
-		while(tmp2)
+		if (is_already_in_env((*input)->cmd[i], env2))
 		{
-			if ((ft_strncmp((*input)->cmd[i], tmp2->name_hidden, env_size(tmp2->name_hidden)) == 0))
-				flag = 1;
-			if (ft_strchr((*input)->cmd[i], '=') == 1 && (ft_strncmp((*input)->cmd[i], tmp2->name_hidden, env_size(tmp2->name_hidden)) == 0))
-			{
-				ft_unset(tmp, tmp2, input);
-				flag = 0;
-			}
-			tmp2 = tmp2->next;
-		}			
+			overwrite_value((*input)->cmd[i], env, env2);
+			flag = 1;
+		}
 		error_env = is_valid_env((*input)->cmd[i]);
 		if (error_env <= 0)
 			return (print_error(error_env, (*input)->cmd[i]));
@@ -109,7 +194,6 @@ int	ft_export(t_env *env, t_env2 *env2, t_input **input)
 		if (error_env == 2 && flag == 0)
 			env_add_hidden_3(&env2, (*input)->cmd[i]);
 		flag = 0;
-		tmp2 = env2;
 	}
 	return (SUCCESS);
 }

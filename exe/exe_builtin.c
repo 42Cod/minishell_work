@@ -60,7 +60,7 @@ int	exec_builtin(t_input **input, t_env *env, t_env2 *env2, char **envp)
 	if (ft_strcmp((*input)->cmd[0], "env") == 0)
 		ft_env(env);
 	if (ft_strcmp((*input)->cmd[0], "unset") == 0)
-		ft_unset(env, env2, input);
+		ft_unset(env, env2, NULL, input); // NOT NULL!!! NULL should be previous
 	if (ft_strcmp((*input)->cmd[0], "exit") == 0)
 		ft_exit(*input);
 	return (res);

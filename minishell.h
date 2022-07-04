@@ -208,7 +208,7 @@ int			ft_pwd(void);
 int			env_size(char *env);
 void		*ft_memdel(void *ptr);
 void		free_node(t_env *env);
-int			ft_unset(t_env *env, t_env2 *env2, t_input **input);
+int			ft_unset(t_env *env, t_env2 *env2, t_env2 *prev, t_input **input);
 int			ft_strisnum(const char *str);
 char		*get_path(t_env *env, char *var, int len);
 int			oldpwd(t_env *env);
