@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 15:13:10 by nkolle            #+#    #+#             */
-/*   Updated: 2022/07/04 19:58:45 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/04 20:56:08 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 
 	exit_status = 0;
 	pipe(fd);
-	if (exec_redir(input, locals) == 0)
+	if (1)
 	{
 		if (is_builtin((*(*input).cmd)))
 		{
@@ -102,6 +102,7 @@ int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 			if (locals->pid == 0)
 			{
 				handle_child_fds(locals, fd);
+				exec_redir(input, locals, 1);
 				exit_status = child_proc(input, locals, env2);
 			}
 			else if (locals->pid != 0)

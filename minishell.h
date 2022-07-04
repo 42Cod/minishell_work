@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 12:54:19 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/03 13:48:25 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/04 20:21:39 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,7 @@ int			is_breaking_char(char **ptr);
 int			executer(t_input *input, t_env2 *env2);
 int			*process_count(t_input *input, int *j);
 int			safe_pipe(int *left, int *right);
-int			exec_redir(t_input *input, t_exe_locals *locals);
-int			redirct_stdin(t_input *tmp, t_exe_locals *locals);
-int			redirct_std_type_in(t_input *tmp, t_exe_locals *locals);
-int			redirct_trunc(t_input *tmp, t_exe_locals *locals);
-int			redirct_app(t_input *tmp, t_exe_locals *locals);
+int			exec_redir(t_input *input, t_exe_locals *locals, int set);
 void		protected_close(int fd);
 char		**char_converter(t_input **input);
 int			str_count(t_input **input);

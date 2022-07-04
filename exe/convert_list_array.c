@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:48:54 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/04 20:02:38 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/04 20:55:25 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	executer(t_input *input, t_env2 *env2)
 	locals.pa = process_count(input, &locals.j);
 	close (STDIN_FILENO);
 	dup2(locals.fd_standard_in, STDIN_FILENO);
+	if (exec_redir(input, &locals, 0) == 1)
+		return (0); //SET GOOD RET VALUE
 	while (locals.i < locals.j)
 	{
 		check_for_dollar(input, env2);
