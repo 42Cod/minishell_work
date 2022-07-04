@@ -52,7 +52,7 @@ int	save_line(t_env *env, t_env2 *env2)
 		add_history((char *) trimmed);
 		parser((char *)trimmed, &buffer, &input, &env);
 		read_heredocs(input);
-		g_state[1] = executer(input, env2);
+		set_err_code(executer(input, env2));
 	}
 	return (1);
 }

@@ -41,7 +41,8 @@ SRC = Lexer/lexer.c\
 	exe/export_helper.c\
 	Utils/find_exec_path.c\
 	Lexer/signal.c\
-	exe/convert_list_array.c
+	exe/convert_list_array.c\
+	Utils/exit_status.c
 OBJ = $(patsubst %.c, %.o, $(SRC))
 LIBFT = $(MAKE) -C ./libft
 

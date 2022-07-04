@@ -52,6 +52,7 @@ void	init_locals(t_exe_locals *locals)
 	locals->fd_standard_in = dup(STDIN_FILENO);
 	locals->fd_standard_out = dup(STDOUT_FILENO);
 	locals->flag_previous_pipe = 0;
+	locals->exit_status = 0;
 }
 
 int		str_count(t_input **input)
@@ -111,7 +112,7 @@ void	check_for_dollar(t_input *input, t_env2 *env2)
 			if (tmp->cmd[i][1] == '?')
 				{
 					free(tmp->cmd[i]);
-					tmp->cmd[i] = ft_itoa(g_state[1]);
+					tmp->cmd[i] = ft_itoa(get_err_code());
 				}
 			else
 			while ((tmp2))

@@ -128,7 +128,6 @@ int			is_breaking_char(char **ptr);
 int			executer(t_input *input, t_env2 *env2);
 int			*process_count(t_input *input, int *j);
 int			safe_pipe(int *left, int *right);
-void		child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2);
 int			exec_redir(t_input *input, t_exe_locals *locals);
 int			redirct_stdin(t_input *tmp, t_exe_locals *locals);
 int			redirct_std_type_in(t_input *tmp, t_exe_locals *locals);
@@ -240,11 +239,13 @@ void		helper_4(t_input **input,
 void		ft_exit2(t_input *input);
 void		executer_b(t_exe_locals *locals);
 int			executer(t_input *input, t_env2 *env2);
-void		child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2);
-void		executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals);
+int			child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2);
+int			executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals);
 int			executer(t_input *input, t_env2 *env2);
 void		executer_b(t_exe_locals *locals);
 void		helper6(t_env2 *env2, t_env2 *tmp2);
 int			has_slash(t_input **input);
+void		set_err_code(int err_code);
+int			get_err_code(void);
 
 #endif

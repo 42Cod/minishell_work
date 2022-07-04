@@ -54,14 +54,17 @@ int	safe_pipe(int *left, int *right)
 	return (1);
 }
 
-void	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
+int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 {
+	int	exit_status;
+
+	exit_status = 0;
 	if (exec_redir(input, locals) == 0)
 	{
 		if (is_builtin((*(*input).cmd)))
 		{
 			dup2(locals->fd_out, STDOUT_FILENO);
-			g_state[1] = exec_builtin(&input, *(input->env),
+			exit_status = exec_builtin(&input, *(input->env),
 					env2, char_converter(&input));
 			dup2(locals->fd_standard_out, STDOUT_FILENO);
 		}
@@ -71,10 +74,11 @@ void	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 			if (locals->pid < 0)
 			{
 				write(1, "ERRORPIPE", 10);
-				return ;
+				return (-1);
 			}
 			if (locals->pid == 0)
-				child_proc(input, locals, env2);
+				exit_status = child_proc(input, locals, env2);
 		}
 	}
+	return (exit_status);
 }

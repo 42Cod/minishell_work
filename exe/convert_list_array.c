@@ -43,7 +43,7 @@ int	executer(t_input *input, t_env2 *env2)
 				return (2);
 		}
 		check_for_dollar(input, env2);
-		executer_a(input, env2, &locals);
+		locals.exit_status = executer_a(input, env2, &locals);
 		locals.i++;
 		input = input->next;
 	}
@@ -51,13 +51,23 @@ int	executer(t_input *input, t_env2 *env2)
 	return (WEXITSTATUS(locals.exit_status));
 }
 
-void	child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2)
+int	child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2)
 {
+	char	*abs_cmd_path;
+	int		exit_status;
+
 	(void)env2;
 	dup2(locals->fd_in, STDIN_FILENO);
 	dup2(locals->fd_out, STDOUT_FILENO);
 	safe_fd_set(&locals->fd_in, STDIN_FILENO);
 	safe_fd_set(&locals->fd_out, STDOUT_FILENO);
 	safe_fd_set(&locals->fd_next, STDIN_FILENO);
-	exit(execve(find_exec_path(&input), input->cmd, char_converter(&input)));
+	abs_cmd_path = find_exec_path(&input);
+	if (abs_cmd_path == NULL || access(abs_cmd_path, F_OK) != 0)
+	{
+		exit(127);
+	}
+	exit_status = execve(abs_cmd_path, input->cmd, char_converter(&input));
+	exit(exit_status);
+	return (exit_status);
 }
