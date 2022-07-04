@@ -2,3 +2,6 @@
 deins in whatsapp 
 ""
 makefile path readline
+
+echo "hi '$HOME nippel $USER' hi $PWD"
+should expand $PWD
