@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 13:07:09 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/03 04:32:22 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:44:14 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,27 +71,45 @@ int	ft_export(t_env *env, t_env2 *env2, t_input **input)
 {
 	int	error_env;
 	int	i;
+	int	flag;
+	t_env2	*tmp2;
+	t_env	*tmp;
 
 	error_env = 0;
+	flag = 0;
+	tmp = env;
+	tmp2 = env2;
 	if (!(*input)->cmd[1])
 	{
 		print4(env2);
 		return (SUCCESS);
 	}
-	i = 1;
-	while ((*input)->cmd[i])
+	i = 0;
+	while ((*input)->cmd[++i] && tmp2)
 	{
+		while(tmp2)
+		{
+			if ((ft_strncmp((*input)->cmd[i], tmp2->name_hidden, env_size(tmp2->name_hidden)) == 0))
+				flag = 1;
+			if (ft_strchr((*input)->cmd[i], '=') == 1 && (ft_strncmp((*input)->cmd[i], tmp2->name_hidden, env_size(tmp2->name_hidden)) == 0))
+			{
+				ft_unset(tmp, tmp2, input);
+				flag = 0;
+			}
+			tmp2 = tmp2->next;
+		}			
 		error_env = is_valid_env((*input)->cmd[i]);
 		if (error_env <= 0)
 			return (print_error(error_env, (*input)->cmd[i]));
-		if (error_env == 1)
+		if (error_env == 1 && flag == 0)
 		{
 			env_add(&env, (*input)->cmd[i]);
 			env_add_hidden_2(&env2, (*input)->cmd[i]);
 		}
-		else
+		if (error_env == 2 && flag == 0)
 			env_add_hidden_3(&env2, (*input)->cmd[i]);
-		i++;
+		flag = 0;
+		tmp2 = env2;
 	}
 	return (SUCCESS);
 }

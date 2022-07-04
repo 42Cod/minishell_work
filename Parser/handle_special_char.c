@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_special_char.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkolle <nkolle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:38:05 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/03 02:45:42 by nkolle           ###   ########.fr       */
+/*   Updated: 2022/06/30 15:28:11 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	read_single_quoted(char **line_comb, t_buffer **buffer)
 		if (**line_comb == '\'')
 			flag = 1;
 		if (**line_comb == '\0' && flag == 0)
-			exit(0);
+		{
+			printf("Quote required\n");
+			break;
+		}
 		if (**line_comb == '\0' || flag == 1)
 		{
 			(*line_comb)++;
@@ -43,7 +46,10 @@ void	read_double_quoted(char **line_comb, t_buffer **buffer)
 		if (**line_comb == '\"')
 			flag = 1;
 		if (**line_comb == '\0' && flag == 0)
-			exit(0);
+		{
+			printf("Quote required\n");
+			break;
+		}
 		if (**line_comb == '\0' || flag == 1)
 		{
 			(*line_comb)++;

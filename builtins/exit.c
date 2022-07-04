@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 13:07:04 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/03 04:31:52 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/06/28 19:27:47 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_exit(t_input *input)
 	{
 		ft_putendl_fd("exit", STDERR);
 		input->ret = 0;
-		exit(0);
+		exit(ft_atoi(input->cmd[0])); // hier muss exit code rein ohne seg fault
 	}
 	if (ft_strisnum((input->cmd[1])) && !input->cmd[2])
 	{

@@ -1,6 +1,7 @@
-CC = gcc
 
-FLAGS = -g -Wall -Werror -Wextra -L ./libft -lft -lreadline -L /Users/nmichael/.brew/opt/readline/lib -I/Users/nmichael/.brew/opt/readline/include
+	CC = gcc
+
+FLAGS = -g -Wall -Werror -Wextra -L ./libft -lft -lreadline -L /usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 
 INCLUDES = minishell.h
 

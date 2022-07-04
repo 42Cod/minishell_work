@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 13:07:15 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/03 05:15:30 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:43:32 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,15 @@ int	ft_unset(t_env *env, t_env2 *env2, t_input **input)
 	t_env	*tmp;
 	t_env2	*tmp2;
 
+	if ((*input)->cmd[1] == NULL)
+		return(1);
+	if (ft_strncmp((*input)->cmd[1], env->name,
+				env_size(env->name)) == 0)
+	{
+		tmp = env->next;
+		free_node(env);
+		env->next = tmp;
+	}
 	while (env && env->next)
 	{
 		if (ft_strncmp((*input)->cmd[1], env->next->name,
@@ -62,14 +71,18 @@ int	ft_unset(t_env *env, t_env2 *env2, t_input **input)
 		}
 		env = env->next;
 	}
-	tmp2 = NULL;
+	if (ft_strncmp((*input)->cmd[1], env2->name_hidden,
+				env_size(env2->name_hidden)) == 0)
+	{
+			tmp2 = env2->next;
+			free_node2(env2);
+			env2->next = tmp2;
+	}
 	while (env2 && env2->next)
 	{
 		if (ft_strncmp((*input)->cmd[1], env2->next->name_hidden,
 				env_size(env2->next->name_hidden)) == 0)
-		{
 			helper6(env2, tmp2);
-		}
 		env2 = env2->next;
 	}
 	return (SUCCESS);
