@@ -35,5 +35,6 @@ void	input_heredoc(t_operator *operator)
 	}
 	free(operator->content);
 	operator->content = sb_finalize(&prompt_input);
+	operator->redir_type = NOTHING;
 	sb_destroy(&prompt_input);
 }
