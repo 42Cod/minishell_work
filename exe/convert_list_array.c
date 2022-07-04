@@ -29,12 +29,10 @@ void	executer_b(t_exe_locals *locals)
 int	executer(t_input *input, t_env2 *env2)
 {
 	t_exe_locals	locals;	
-	int	ret;
 
 	g_state[0] = EXEC;
 	init_locals(&locals);
 	locals.pa = process_count(input, &locals.j);
-	ret = 0;
 	close (STDIN_FILENO);
 	dup2(locals.fd_standard_in, STDIN_FILENO);
 	while (locals.i < locals.j)
