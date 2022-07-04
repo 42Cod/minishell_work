@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:48:54 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/04 19:58:03 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/04 20:02:38 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,7 @@ int	child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2)
 	int		exit_status;
 
 	(void)env2;
-	dup2(locals->fd_in, STDIN_FILENO);
-	dup2(locals->fd_out, STDOUT_FILENO);
-	safe_fd_set(&locals->fd_in, STDIN_FILENO);
-	safe_fd_set(&locals->fd_out, STDOUT_FILENO);
-	// safe_fd_set(&locals->fd_next, STDIN_FILENO);
+	(void)locals;
 	abs_cmd_path = find_exec_path(&input);
 	if (abs_cmd_path == NULL || access(abs_cmd_path, F_OK) != 0)
 	{
