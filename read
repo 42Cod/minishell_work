@@ -5,3 +5,5 @@ makefile path readline
 
 echo "hi '$HOME nippel $USER' hi $PWD"
 should expand $PWD
+
+export_helper malloc in dollar !! ochmal schauen wir mallocen für 100

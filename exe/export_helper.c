@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:49:55 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/04 19:54:42 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/13 15:16:07 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,31 @@ char	**char_converter(t_input **input)
 	return (arr);
 }
 
+int find_breaking_char(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isalnum(str[i]) == 0 && str[i] != '_')
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+char *ft_getenv(char *name, t_env2 *env)
+{
+	while (env)
+	{
+		if (ft_strncmp(name, env->name_hidden, env_size(env->name_hidden)) == 0)
+			return (ft_strdup(env->value_hidden));
+		env = env->next;
+	}
+	return (name);
+}
+
 void	check_for_dollar(t_input *input, t_env2 *env2)
 {
 	t_input	*tmp;
@@ -107,26 +132,90 @@ void	check_for_dollar(t_input *input, t_env2 *env2)
 	i = 0;
 	while (tmp->cmd[i])
 	{
-		if (tmp->cmd[i][0] == '$')
+		if (ft_strrchr(tmp->cmd[i], '$'))
 		{
-			if (tmp->cmd[i][1] == '?')
+			if (*(ft_strrchr(tmp->cmd[i], '$') + 1) == '?')
 				{
 					free(tmp->cmd[i]);
 					tmp->cmd[i] = ft_itoa(get_err_code());
 				}
 			else
-			while ((tmp2))
-			{
-				if (ft_strcmp(tmp->cmd[i] + 1, tmp2->name_hidden) == 0)
-				{
-					free(tmp->cmd[i]);
-					tmp->cmd[i] = ft_strdup(tmp2->value_hidden);
-				}
-				tmp2 = tmp2->next;
-			}
-			tmp2 = env2;
+				get_dollar_in_quotes(env2, tmp->cmd[i]);
 		}
 		i++;
 	}
 }
- 
+
+void	get_dollar_in_quotes(t_env2 *env2,  char *str)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	**expanded;
+	char	*dollarstr;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	expanded = NULL;
+	(void)env2;
+	expanded = malloc(sizeof(char *) * (100));
+	while (str[i])
+	{
+		k = i;
+		while (str[i] && (str[i] != '$'))
+			i++;
+		expanded[j] = ft_substr(str, k, (i - k));
+		k = i;
+		j++;
+		if (str[i] && (str[i] == '$'))
+		{
+			while (42)
+			{
+				if (str[i] == ' ' || str[i] == '\0')
+				{
+					dollarstr = ft_substr(str, (k + 1), (i - k));
+					expanded[j] = ft_strdup(ft_getenv(dollarstr, env2));
+					free(dollarstr);
+					i++;
+					j++;
+					break;
+				}
+				i++;
+			}
+		}
+	}
+	expanded[j + 1] = NULL;
+	k = 0;
+	while (j > k)
+	{
+		printf(" exp[%d]: %s! \n", k, expanded[k]);
+		k++;
+	}
+}
+
+
+// $USER -> MARIUS du musst freen und ersetzen		echo " was geht $USER" echo "was $USER test $USER"
+
+
+
+	// while (str[i])
+	// {
+	// 	k = i;
+	// 	expanded = malloc(sizeof(char *) * (j + 1));
+	// 	while (str[i] && str[i] != '$')
+	// 		i++;
+	// 	expanded[j] = ft_substr(str, k, i);
+	// 	if (j != 0)
+	// 		j++;
+	// 	k = i;
+	// 	if (str[i] == '$')
+	// 	{
+	// 		while (str[i] && str[i] != ' ')
+	// 			i++;
+	// 		dollarstr = ft_substr(str, k, i);;
+	// 		expanded[++j] = ft_strdup(ft_getenv(dollarstr, env2));
+	// 	}
+	// 	printf(" exp0: %s\n", expanded[j]);
+	// }
+	// expanded[j + 1] = NULL;
