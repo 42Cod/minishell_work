@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/23 16:49:55 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/13 15:16:07 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/13 17:20:22 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ char *ft_getenv(char *name, t_env2 *env)
 			return (ft_strdup(env->value_hidden));
 		env = env->next;
 	}
-	return (name);
+	return (NULL);
 }
 
 void	check_for_dollar(t_input *input, t_env2 *env2)
@@ -140,13 +140,16 @@ void	check_for_dollar(t_input *input, t_env2 *env2)
 					tmp->cmd[i] = ft_itoa(get_err_code());
 				}
 			else
-				get_dollar_in_quotes(env2, tmp->cmd[i]);
+			{
+				input->buff = get_dollar_in_quotes(env2, tmp->cmd[i]);
+				converte_buff(input, &i);
+			}
 		}
 		i++;
 	}
 }
 
-void	get_dollar_in_quotes(t_env2 *env2,  char *str)
+char	**get_dollar_in_quotes(t_env2 *env2,  char *str)
 {
 	int		i;
 	int		j;
@@ -158,7 +161,6 @@ void	get_dollar_in_quotes(t_env2 *env2,  char *str)
 	j = 0;
 	k = 0;
 	expanded = NULL;
-	(void)env2;
 	expanded = malloc(sizeof(char *) * (100));
 	while (str[i])
 	{
@@ -172,50 +174,33 @@ void	get_dollar_in_quotes(t_env2 *env2,  char *str)
 		{
 			while (42)
 			{
-				if (str[i] == ' ' || str[i] == '\0')
+				i++;
+				if (str[i] == ' ' || str[i] == '\0' || str[i] == '$')
 				{
-					dollarstr = ft_substr(str, (k + 1), (i - k));
+				dollarstr = ft_substr(str, (k + 1), (i - k - 1));
 					expanded[j] = ft_strdup(ft_getenv(dollarstr, env2));
 					free(dollarstr);
-					i++;
 					j++;
 					break;
 				}
-				i++;
 			}
 		}
 	}
 	expanded[j + 1] = NULL;
-	k = 0;
-	while (j > k)
-	{
-		printf(" exp[%d]: %s! \n", k, expanded[k]);
-		k++;
-	}
+	return(expanded);
 }
 
+void	converte_buff(t_input *input, int *i)
+{
+	int		j;
 
-// $USER -> MARIUS du musst freen und ersetzen		echo " was geht $USER" echo "was $USER test $USER"
-
-
-
-	// while (str[i])
-	// {
-	// 	k = i;
-	// 	expanded = malloc(sizeof(char *) * (j + 1));
-	// 	while (str[i] && str[i] != '$')
-	// 		i++;
-	// 	expanded[j] = ft_substr(str, k, i);
-	// 	if (j != 0)
-	// 		j++;
-	// 	k = i;
-	// 	if (str[i] == '$')
-	// 	{
-	// 		while (str[i] && str[i] != ' ')
-	// 			i++;
-	// 		dollarstr = ft_substr(str, k, i);;
-	// 		expanded[++j] = ft_strdup(ft_getenv(dollarstr, env2));
-	// 	}
-	// 	printf(" exp0: %s\n", expanded[j]);
-	// }
-	// expanded[j + 1] = NULL;
+	j = 0;
+	free(input->cmd[*i]);
+	input->cmd[*i] = " ";
+	while(input->buff[j] != NULL)
+	{
+		input->cmd[*i] = ft_strjoin(input->cmd[*i], input->buff[j]);
+		free(input->buff[j]);	
+		j++;
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 12:54:19 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/12 14:49:09 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/13 15:39:44 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_env2
 	char			*name_hidden;
 	char			*value_hidden;
 	bool			hidden;
-	char			*dollar;
 }				t_env2;
 
 typedef struct s_operator
@@ -108,6 +107,7 @@ typedef struct s_input
 	struct s_input		*next;
 	struct s_env		**env;
 	int					ret;
+	char				**buff;
 }	t_input;
 
 enum e_state
@@ -244,6 +244,7 @@ void		helper6(t_env2 *env2, t_env2 *tmp2);
 int			has_slash(t_input **input);
 void		set_err_code(int err_code);
 int			get_err_code(void);
-void		get_dollar_in_quotes(t_env2 *env2, char *str);
+char		**get_dollar_in_quotes(t_env2 *env2,  char *str);
+void		converte_buff(t_input *input, int *i);
 
 #endif
