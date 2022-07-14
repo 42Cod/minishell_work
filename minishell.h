@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 12:54:19 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/13 15:39:44 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/14 13:57:53 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,12 @@ enum e_state
 {
 	IDLE,
 	HDOC,
-	EXEC
+	EXEC,
+	BREAK,
+	START
 };
 
-extern int	g_state[2];
+extern int	g_state[3];
 int			main(int ac, char **argv, char **envp);
 int			save_line(t_env *env, t_env2 *env2);
 void		parser(char *line_comb, t_buffer **buffer,

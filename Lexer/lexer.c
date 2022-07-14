@@ -6,13 +6,13 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:52:51 by nkolle            #+#    #+#             */
-/*   Updated: 2022/07/13 15:27:14 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/14 13:47:23 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	g_state[2];
+int	g_state[3];
 
 void	read_heredocs(t_input *input)
 {
@@ -40,7 +40,6 @@ int	save_line(t_env *env, t_env2 *env2)
 
 	input = NULL;
 	buffer = NULL;
-	g_state[0] = IDLE;
 	line = readline("\xf0\x9f\xa6\xa6 ");
 	trimmed = ft_strtrim(line, " \t\n");
 	if (line)

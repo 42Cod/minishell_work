@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:48:54 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/04 20:55:25 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/14 13:50:54 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	executer(t_input *input, t_env2 *env2)
 {
 	t_exe_locals	locals;	
 
-	g_state[0] = EXEC;
 	init_locals(&locals);
 	locals.pa = process_count(input, &locals.j);
 	close (STDIN_FILENO);
@@ -39,7 +38,8 @@ int	executer(t_input *input, t_env2 *env2)
 		return (0); //SET GOOD RET VALUE
 	while (locals.i < locals.j)
 	{
-		check_for_dollar(input, env2);
+		if (g_state[2] != BREAK)
+			check_for_dollar(input, env2);
 		locals.exit_status = executer_a(input, env2, &locals);
 		locals.i++;
 		input = input->next;

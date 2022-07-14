@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 15:38:05 by nmichael          #+#    #+#             */
-/*   Updated: 2022/06/30 15:28:11 by marius           ###   ########.fr       */
+/*   Updated: 2022/07/14 13:50:57 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	read_single_quoted(char **line_comb, t_buffer **buffer)
 	int	flag;
 
 	flag = 0;
+	g_state[2] = BREAK;
 	while (**line_comb != '\'')
 	{
 		if (**line_comb == '\'')
