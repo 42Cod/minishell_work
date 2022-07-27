@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nmichael <nmichael@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 20:02:18 by nkolle            #+#    #+#             */
-/*   Updated: 2022/06/03 04:25:52 by nmichael         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:18:02 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	parser(
 {
 	t_operator	*operator;
 
-	operator = ft_calloc(1, sizeof(t_operator));
+	operator = NULL;
 	while (*line_comb)
 	{
 		if (check_for_str(line_comb, "<<"))
@@ -34,7 +34,9 @@ void	parser(
 			helper_4(input, &operator, buffer, env);
 		}
 		if (operator != NULL && *line_comb == '\0' && operator->flag == 0)
+		{
 			create_op_files(&operator);
+		}
 		else
 			fck_norm5(&line_comb, buffer);
 	}

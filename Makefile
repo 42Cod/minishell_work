@@ -61,10 +61,12 @@ $(NAME): $(OBJ)
 clean:
 	rm -f $(OBJ)
 	rm -f *.a
+	rm -f *.o
 	make -C ./libft clean
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f *.o
 	make fclean -C ./libft
 
 re: fclean all

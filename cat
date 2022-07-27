@@ -1,3 +1,0 @@
-	CC = gcc
-	$(CC) $(OBJ) $(READLINE_LINK) $(READLINE_INC) $(CFLAGS) $(LIBFT_LINK) $(L_FLAGS)  -o $@
-	$(CC) $(CFLAGS) $(READLINE_INC) -o $@ -c $<
