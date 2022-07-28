@@ -34,11 +34,11 @@ void	rd_helper(char **line_comb, t_buffer **buffer)
 		if (**line_comb == '\'')
 		{
 			(*line_comb)++;
-			if (((**line_comb)) == '$')
-			{
-				rd_dollar(line_comb, buffer);
-				break ;
-			}
+			// if (((**line_comb)) == '$')
+			// {
+			// 	rd_dollar(line_comb, buffer);
+			// 	break ;
+			// }
 			read_single_quoted(line_comb, buffer);
 			(*line_comb)++;
 			break ;
