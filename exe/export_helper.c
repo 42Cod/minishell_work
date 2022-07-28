@@ -121,6 +121,17 @@ char *ft_getenv(char *name, t_env2 *env)
 	return (NULL);
 }
 
+int ft_getenv2(char *name, t_env2 *env)
+{
+	while (env)
+	{
+		if (ft_strncmp(name, env->name_hidden, env_size(env->name_hidden)) == 0)
+			return (1);
+		env = env->next;
+	}
+	return (0);
+}
+
 void	check_for_dollar(t_input *input, t_env2 *env2)
 {
 	t_input	*tmp;
@@ -175,9 +186,12 @@ char	**get_dollar_in_quotes(t_env2 *env2,  char *str)
 			while (42)
 			{
 				i++;
-				if (str[i] == ' ' || str[i] == '\0' || str[i] == '$')
+				if(str[i] == ' ' || str[i] == '\0' || str[i] == '$')
 				{
 				dollarstr = ft_substr(str, (k + 1), (i - k - 1));
+				if (ft_getenv2(dollarstr, env2) == 0)
+					break;
+				else
 					expanded[j] = ft_strdup(ft_getenv(dollarstr, env2));
 					free(dollarstr);
 					j++;

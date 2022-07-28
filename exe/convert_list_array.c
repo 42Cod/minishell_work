@@ -44,7 +44,9 @@ int	executer(t_input *input, t_env2 *env2)
 		locals.i++;
 		input = input->next;
 	}
+	g_state[2] = START;
 	executer_b(&locals);
+
 	return (WEXITSTATUS(locals.exit_status));
 }
 
