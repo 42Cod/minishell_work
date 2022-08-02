@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 19:22:12 by nkolle            #+#    #+#             */
-/*   Updated: 2022/07/26 16:46:52 by marius           ###   ########.fr       */
+/*   Updated: 2022/08/01 16:27:55 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,4 @@ void	append_linked_list_to_input(t_input **input, t_operator **operator,
 	add_buffer_cmd(buffer, input);
 	if ((*operator) != NULL)
 		(*input)->operator = (*operator);
-	if (((*input)->operator))
-		printf("input-oper %d\n", (*input)->operator->redir_type);
 }

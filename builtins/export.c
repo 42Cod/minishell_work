@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/06 13:07:09 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/01 14:44:14 by marius           ###   ########.fr       */
+/*   Updated: 2022/08/01 16:29:19 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ static char	*get_env_value(char *cmd)
 	char	*cmd_at_equals;
 	int		i;
 
-	cmd_at_equals = ft_strrchr(cmd, '=') + 1;
+	cmd_at_equals = ft_strrchr(cmd, '=');
+	printf("ft_strlen(cmd_at_equals) %s\n", cmd_at_equals); // wenn = dann skip
 	if (cmd_at_equals == NULL)
 		return (NULL);
 	env_length = ft_strlen(cmd_at_equals);
@@ -149,7 +150,7 @@ static void	overwrite_value(char *cmd, t_env *env, t_env2 *hidden_env)
 	tmp_hidden_env = hidden_env;
 	while (tmp_hidden_env)
 	{
-		if (ft_strncmp(tmp_hidden_env->name_hidden, env_name, \
+		if (ft_strncmp(tmp_hidden_env->name_hidden, env_name, 
 			ft_strlen(env_name)) == 0)
 		{
 			free(tmp_hidden_env->value_hidden);

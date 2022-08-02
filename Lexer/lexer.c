@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 16:52:51 by nkolle            #+#    #+#             */
-/*   Updated: 2022/07/26 15:29:13 by marius           ###   ########.fr       */
+/*   Updated: 2022/08/02 11:54:55 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,22 @@ int	g_state[3];
 void	read_heredocs(t_input *input)
 {
 	t_operator	*op;
+	t_input		*tmp;
 
-	while (input != NULL)
+	tmp = input;
+	while (tmp != NULL)
 	{
-		op = input->operator;
+		op = tmp->operator;
 		while (op != NULL)
 		{
+			printf("op redir tupe: %s\n", op->content);
 			if (op->redir_type == HEREDOC)
 				input_heredoc(op);
 			op = op->next;
 		}
-		input = input->next;
+		tmp = tmp->next;
 	}
+	input->operator->redir_type = HEREDOC;
 }
 
 int	save_line(t_env *env, t_env2 *env2)
@@ -41,7 +45,6 @@ int	save_line(t_env *env, t_env2 *env2)
 	input = NULL;
 	buffer = NULL;
 	line = readline("\xf0\x9f\xa6\xa6 ");
-	// line = readline("something else -> ");
 	trimmed = ft_strtrim(line, " \t\n");
 	if (line)
 		free(line);
@@ -51,7 +54,8 @@ int	save_line(t_env *env, t_env2 *env2)
 	{
 		add_history((char *) trimmed);
 		parser((char *)trimmed, &buffer, &input, &env);
-		read_heredocs(input);
+		if (input->operator && input->operator->redir_type == HEREDOC)
+			read_heredocs(input);
 		set_err_code(executer(input, env2));
 	}
 	return (1);

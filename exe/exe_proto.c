@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 15:13:10 by nkolle            #+#    #+#             */
-/*   Updated: 2022/07/26 17:17:53 by marius           ###   ########.fr       */
+/*   Updated: 2022/08/02 11:56:06 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,23 @@ void	handle_child_fds(t_exe_locals *locals, int fd[2])
 {
 	if (locals->fd_in != STDIN_FILENO)
 	{
+		printf("1\n");
 		dup2(locals->fd_in, STDIN_FILENO);
 		close(locals->fd_in);
 	}
 	if (locals->fd_out != STDOUT_FILENO)
+	{
+		printf("2\n");
 		dup2(locals->fd_out, STDOUT_FILENO);
+	}
 	else if (locals->i != locals->j - 1)
+	{
+		printf("3\n");
 		dup2(fd[1], STDOUT_FILENO);
+	}
 	else if (locals->i == locals->j - 1)
 	{
+		printf("4\n");
 		close(STDOUT_FILENO);
 		dup2(locals->fd_standard_out, STDOUT_FILENO);
 	}
@@ -82,39 +90,36 @@ int	executer_a(t_input *input, t_env2 *env2, t_exe_locals	*locals)
 
 	exit_status = 0;
 	pipe(fd);
-	if (1)
+	if (is_builtin((*(*input).cmd)) && (*input).next == NULL)
 	{
-		if (is_builtin((*(*input).cmd)))
+		dup2(locals->fd_out, STDOUT_FILENO);
+		exit_status = exec_builtin(&input, *(input->env),
+				env2, char_converter(&input));
+		dup2(locals->fd_standard_out, STDOUT_FILENO);
+	}
+	else
+	{
+		locals->pid = fork();
+		if (locals->pid < 0)
 		{
-			dup2(locals->fd_out, STDOUT_FILENO);
-			exit_status = exec_builtin(&input, *(input->env),
-					env2, char_converter(&input));
-			dup2(locals->fd_standard_out, STDOUT_FILENO);
+			write(1, "ERRORPIPE", 10);
+			return (-1);
 		}
-		else
+		if (locals->pid == 0)
 		{
-			locals->pid = fork();
-			if (locals->pid < 0)
-			{
-				write(1, "ERRORPIPE", 10);
-				return (-1);
-			}
-			if (locals->pid == 0)
-			{
-				handle_child_fds(locals, fd);
-				exec_redir(input, locals, 1);
-				exit_status = child_proc(input, locals, env2);
-			}
-			else if (locals->pid != 0)
-			{
-				locals->pa[locals->i] = locals->pid;
-				close(fd[1]);
-				protected_close(locals->fd_in);
-				protected_close(locals->fd_out);
-				if (locals->i != locals->j - 1 && locals->fd_next == 0)
-					locals->fd_in = dup(fd[0]);
-				close(fd[0]);
-			}
+			handle_child_fds(locals, fd);
+			exec_redir(input, locals, 1);
+			exit_status = child_proc(input, locals, env2);
+		}
+		else if (locals->pid != 0)
+		{
+			locals->pa[locals->i] = locals->pid;
+			close(fd[1]);
+			protected_close(locals->fd_in);
+			protected_close(locals->fd_out);
+			if (locals->i != locals->j - 1 && locals->fd_next == 0)
+				locals->fd_in = dup(fd[0]);
+			close(fd[0]);
 		}
 	}
 	return (exit_status);

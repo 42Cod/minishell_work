@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 15:48:54 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/26 17:20:03 by marius           ###   ########.fr       */
+/*   Updated: 2022/08/02 11:55:10 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,10 @@ int	executer(t_input *input, t_env2 *env2)
 	close (STDIN_FILENO);
 	dup2(locals.fd_standard_in, STDIN_FILENO);
 	if (exec_redir(input, &locals, 0) == 1)
-		return (0); //SET GOOD RET VALUE
+		return (0);
 	while (locals.i < locals.j)
 	{
+		printf("TEST\n");
 		if (g_state[2] != BREAK)
 			check_for_dollar(input, env2);
 		locals.exit_status = executer_a(input, env2, &locals);
@@ -62,7 +63,13 @@ int	child_proc(t_input *input, t_exe_locals *locals, t_env2 *env2)
 	{
 		exit(127);
 	}
-	exit_status = execve(abs_cmd_path, input->cmd, char_converter(&input));
+	if (is_builtin((*(*input).cmd)))
+	{
+		exit_status = exec_builtin(&input, *(input->env),
+		env2, char_converter(&input));
+	}
+	else
+		exit_status = execve(abs_cmd_path, input->cmd, char_converter(&input));
 	exit(exit_status);
 	return (exit_status);
 }

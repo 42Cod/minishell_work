@@ -1,7 +1,7 @@
 
 	CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 READLINE_LINK = -L /usr/local/opt/readline/lib
 READLINE_INC = -I/usr/local/opt/readline/include
 LIBFT_LINK = -L ./libft

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkolle <nkolle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/13 11:47:53 by nkolle            #+#    #+#             */
-/*   Updated: 2021/08/13 15:03:14 by nkolle           ###   ########.fr       */
+/*   Updated: 2022/08/01 14:03:02 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ char	*ft_strrchr(const char *s, int c)
 	while (&pointer[i] >= &pointer[0])
 	{
 		if (pointer[i] == (char)c)
+		{
+			printf("instrchrr pointer %s\n", pointer);
+			printf("instrchrr pointer+i %s\n", (pointer + i));
 			return (pointer + i);
+		}
 		if (i == 0)
 			return (NULL);
 		if (pointer[i] != (char)c)

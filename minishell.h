@@ -6,7 +6,7 @@
 /*   By: marius <marius@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 12:54:19 by nmichael          #+#    #+#             */
-/*   Updated: 2022/07/14 13:57:53 by marius           ###   ########.fr       */
+/*   Updated: 2022/08/01 18:05:19 by marius           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ enum e_operator {
 	OUT_TRUNCATE,
 	HEREDOC,
 	OUT_APPEND,
+	PIPE_DONE
 };
 
 typedef struct s_sb
